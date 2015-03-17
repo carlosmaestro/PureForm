@@ -8,6 +8,7 @@ using System;
 using UnityEngine.UI;
 
 
+
 public class Connection : MonoBehaviour
 {
 		public Image image;
@@ -15,7 +16,7 @@ public class Connection : MonoBehaviour
 		private Button button;
 		public Text path;
 
-		// Use this for initialization
+		// Use this for initializations
 		void Start ()
 		{
 			
