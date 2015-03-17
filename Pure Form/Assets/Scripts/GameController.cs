@@ -73,7 +73,9 @@ public class GameController : MonoBehaviour
 
 		public  void GameOver ()
 		{
-				gameOverText.text = "Game Over!";
-				gameOver = true;
+				//gameOverText.text = "Game Over!";
+				//gameOver = true;
+				Time.timeScale = 0;
+				Application.LoadLevel ("menu");
 		}
 }
