@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Inventory.cs">
+    <Files>
+      <File FileName="Assets\Scripts\SlotScript.cs" Line="65" Column="1" />
+      <File FileName="Assets\Scripts\Inventory.cs" Line="99" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Assets\Scripts\CanvasBehaviour.cs" line="20" />
+      <Breakpoint file="C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Assets\Scripts\Inventory.cs" line="193" />
+      <Breakpoint file="C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Assets\Scripts\Inventory.cs" line="201" />
+      <Breakpoint file="C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Assets\Scripts\Inventory.cs" line="206" />
+      <Breakpoint file="C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Assets\Scripts\Inventory.cs" line="101" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
