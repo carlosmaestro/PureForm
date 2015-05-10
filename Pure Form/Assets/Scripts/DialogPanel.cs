@@ -6,9 +6,10 @@ public class DialogPanel : MonoBehaviour {
 
     public Item item;
     public Text nameItem;
+    Inventory inventory;
 
 	void Start () {
-	
+        inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
 	}
 	
 	// Update is called once per frame
@@ -26,4 +27,11 @@ public class DialogPanel : MonoBehaviour {
     {
         transform.gameObject.SetActive(false);
     }
+
+    public void SetMoveOperation()
+    {
+        inventory.SetCurrentOperation(Inventory.OperationType.MoveItem, item);
+    }
+
+
 }

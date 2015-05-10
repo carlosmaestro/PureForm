@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{BEEE27FB-BA9C-C14F-9CF8-5F50486EC0C8}</ProjectGuid>
+	<ProjectGuid>{E6BB497E-C660-560C-5FA7-E04E6FC704C6}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -55,7 +55,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="TouchScript">
- <HintPath>C:/Users/brlight/Documents/Projetos/PureForm/PureForm/Assets/TouchScript/Plugins/TouchScript.dll</HintPath>
+ <HintPath>C:/Users/brlight/Documents/Projetos/PureForm/Pure Form/Assets/TouchScript/Plugins/TouchScript.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

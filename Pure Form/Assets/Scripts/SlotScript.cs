@@ -43,7 +43,7 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
 			itemImage.enabled = true;
 
 		} else {
-			//itemImage.enabled = false;
+			itemImage.sprite = null;
 		}
 
         foreach (Touch touch in Input.touches)
@@ -101,19 +101,19 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
         float slotwidth = transform.gameObject.GetComponent<RectTransform>().sizeDelta.x;
         float slotheigth = transform.gameObject.GetComponent<RectTransform>().sizeDelta.y;
 
-		//Debug.Log(transform.name);
-		if (item != null ) {
-			//dialogPanel.transform.position = new Vector3 (posX + slotwidth, posY - slotheigth);
-            //dialogPanel.GetComponent<DialogPanel> ().SetItem (item);
-            //dialogPanel.SetActive (true);
-            //transform.GetComponent<Image>().color = 
-            inventory.ShowDialogItem(gameObject);
+        ////Debug.Log(transform.name);
+        //if (item != null ) {
+        //    //dialogPanel.transform.position = new Vector3 (posX + slotwidth, posY - slotheigth);
+        //    //dialogPanel.GetComponent<DialogPanel> ().SetItem (item);
+        //    //dialogPanel.SetActive (true);
+        //    //transform.GetComponent<Image>().color = 
+        //    inventory.Proc(gameObject);
 
-		} else {
-            inventory.HideDialogItem(gameObject);
+        //} else {
+        //    inventory.HideDialogItem(gameObject);
 
-		}
-        
+        //}
+        inventory.ProcessSlotClicked(gameObject);
 	}
 
 	public void OnPointerEnter (PointerEventData data)

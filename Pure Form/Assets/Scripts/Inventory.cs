@@ -15,16 +15,32 @@ public class Inventory : MonoBehaviour
 	ItemDatabase database;
 	float Swidth;
 	float Sheight;
+
+    //cores dos slots
     public Color32 selectedSlotColor;
     public Color32 selectableSlotColor;
+    public Color32 notSelectableSlotColor;    
+
     private GameObject lastSelectSlot;
     
-
+    //paineis de interação dieta com o player
     public GameObject dialogPanel;
-         
+    public GameObject confirmPanel;
+
+    //operação referante ao menu de dialogo
+    public enum OperationType { 
+        MoveItem,
+        CombineItem,
+        EquipItem,
+        Null
+    }
+    public OperationType currentOperation;
+    public Item currentOperationItem;
+    //--->
 
 	void Start ()
 	{
+        currentOperation = OperationType.Null;
         foreach (Transform gameObj in transform)
         {
             if (gameObj.tag == "Slot")
@@ -114,9 +130,58 @@ public class Inventory : MonoBehaviour
                 objSlotScript.selectedSlotImage.gameObject.SetActive(true);
                 objSlotScript.selectedSlotImage.color = selectableSlotColor;
             }
+            else
+            {
+                SlotScript objSlotScript = slot.GetComponent<SlotScript>();
+                objSlotScript.selectedSlotImage.gameObject.SetActive(true);
+                objSlotScript.selectedSlotImage.color = notSelectableSlotColor;
+            }
         }
 
-        Debug.Log(" slot ----" + lastSelectSlot.name);
+        //Debug.Log(" slot ----" + lastSelectSlot.name);
+    }
+
+    public void SetCurrentOperation(OperationType operation, Item item) 
+    {
+        currentOperationItem = item;
+        currentOperation = operation;
+    }
+
+    public void ProcessSlotClicked(GameObject slot)
+    {
+        SlotScript objSlotScript = slot.GetComponent<SlotScript>();
+        if (currentOperation == OperationType.Null)
+        {
+            if (objSlotScript.item != null)
+            {
+
+                ShowDialogItem(slot);
+
+            }
+            else
+            {
+                HideDialogItem(slot);
+
+            }
+        }
+        else
+        {	
+			if(lastSelectSlot != slot){
+	            if (currentOperation == OperationType.MoveItem)
+	            {
+	                objSlotScript.item = currentOperationItem;
+	                ResetCurrentOperation();
+	                lastSelectSlot.GetComponent<SlotScript>().item = null;
+	                DesSelectSlot();
+	            }
+			}
+        }
+    }
+
+    public void ResetCurrentOperation()
+    {
+        currentOperation = OperationType.Null;
+        currentOperationItem = new Item();
     }
     
 }
