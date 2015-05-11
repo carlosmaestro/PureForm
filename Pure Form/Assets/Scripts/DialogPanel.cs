@@ -26,6 +26,7 @@ public class DialogPanel : MonoBehaviour {
     public void Close()
     {
         transform.gameObject.SetActive(false);
+        inventory.DesSelectSlot();
     }
 
     public void SetMoveOperation()

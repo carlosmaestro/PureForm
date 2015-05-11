@@ -16,6 +16,10 @@ public class Inventory : MonoBehaviour
 	float Swidth;
 	float Sheight;
 
+    //paineis de bloqueio 
+    public GameObject painelBloqueio;
+    public GameObject painelBloqueio2;
+
     //cores dos slots
     public Color32 selectedSlotColor;
     public Color32 selectableSlotColor;
@@ -26,6 +30,9 @@ public class Inventory : MonoBehaviour
     //paineis de interação dieta com o player
     public GameObject dialogPanel;
     public GameObject confirmPanel;
+
+    //texto de ajuda
+    public Text helpText;
 
     //operação referante ao menu de dialogo
     public enum OperationType { 
@@ -143,6 +150,25 @@ public class Inventory : MonoBehaviour
 
     public void SetCurrentOperation(OperationType operation, Item item) 
     {
+        //if (operation == OperationType.MoveItem)
+        //{
+        //    painelBloqueio2.SetActive(true);
+        //    painelBloqueio.SetActive(false);
+        //}else if(op)
+        switch (operation) 
+        {
+            case OperationType.MoveItem:
+                painelBloqueio2.SetActive(true);
+                painelBloqueio.SetActive(false);
+                helpText.text = "Selecione o slot para mover a gema.";
+                break;
+            case OperationType.EquipItem:
+                painelBloqueio2.SetActive(false);
+                painelBloqueio.SetActive(true);
+                helpText.text = "Selecione o slot para equipar a gema.";
+                break;
+
+        }
         currentOperationItem = item;
         currentOperation = operation;
     }
