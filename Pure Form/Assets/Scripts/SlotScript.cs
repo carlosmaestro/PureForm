@@ -15,7 +15,9 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
 	float posX;
 	float posY;
 	public bool draggingItem = false;
-    public Image selectedSlotImage;   
+    public Image selectedSlotImage;
+    public Image blockSloctImage;
+    public Text levelSlotText;
 
 	private float maxPickingDistance = 10000;// increase if needed, depending on your scene size
 
@@ -41,9 +43,11 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
 		if (item != null) {
 			itemImage.sprite = item.itemIcon;
 			itemImage.enabled = true;
+            levelSlotText.text = item.itemLevel + "";
 
 		} else {
 			itemImage.sprite = null;
+            levelSlotText.text = "";
 		}
 
         foreach (Touch touch in Input.touches)

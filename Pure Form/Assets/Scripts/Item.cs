@@ -9,8 +9,7 @@ public class Item {
     public Sprite itemIcon;
     public GameObject itemModel;
     public string itemType;
-
-    public  Dictionary<string, string> dictTypes = new Dictionary<string, string>(); 
+    public bool isCombination;
 
     //public enum ItemType
     //{ 
@@ -26,12 +25,13 @@ public class Item {
     //    Water_Earth
     //}
 
-    public Item(int id, int level, string type)
+    public Item(int id, int level, string type, bool iscombination)
     {
         itemID = id;
         itemLevel = level;
         itemIcon = Resources.Load<Sprite>(type);
         itemType = type;
+        isCombination = iscombination;
     }
 
     public Item()
