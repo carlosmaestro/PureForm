@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,7 +12,13 @@ public class Inventory : MonoBehaviour
 	public List<Item> itens = new List<Item> ();
 	public bool draggingItem = false;
 	public Vector3 positionMouse;
+
+    //grade itens
     public GameObject gradeItens;
+
+    //grade itens
+    public GameObject gradeItensEquiped;
+
 	ItemDatabase database;
 	float Swidth;
 	float Sheight;
@@ -31,6 +38,9 @@ public class Inventory : MonoBehaviour
     public GameObject dialogPanel;
     public GameObject confirmPanel;
 
+    
+    //painel cancel operation
+    public GameObject closeOperationPanel;
     //texto de ajuda
     public Text helpText;
 
@@ -48,7 +58,7 @@ public class Inventory : MonoBehaviour
 	void Start ()
 	{
         currentOperation = OperationType.Null;
-        foreach (Transform gameObj in transform)
+        foreach (Transform gameObj in gradeItens.transform)
         {
             if (gameObj.tag == "Slot")
                 slots.Add(gameObj.gameObject);
@@ -62,6 +72,9 @@ public class Inventory : MonoBehaviour
 		AddItem (2);
 		AddItem (3);
 		AddItem (4);
+        AddItem(5);
+        AddItem(6);
+        AddItem(7);
 	}
 
 	void Update ()
@@ -122,8 +135,10 @@ public class Inventory : MonoBehaviour
 
     public void DesSelectSlot()
     {
-        lastSelectSlot.GetComponent<SlotScript>().selectedSlotImage.gameObject.SetActive(false);
-        
+        if (lastSelectSlot != null)
+        {
+            lastSelectSlot.GetComponent<SlotScript>().selectedSlotImage.gameObject.SetActive(false);
+        }
     }
 
     public void MarkMovebleSlots()
@@ -161,14 +176,27 @@ public class Inventory : MonoBehaviour
                 painelBloqueio2.SetActive(true);
                 painelBloqueio.SetActive(false);
                 helpText.text = "Selecione o slot para mover a gema.";
+                helpText.gameObject.SetActive(true);
+
                 break;
             case OperationType.EquipItem:
                 painelBloqueio2.SetActive(false);
                 painelBloqueio.SetActive(true);
                 helpText.text = "Selecione o slot para equipar a gema.";
+                helpText.gameObject.SetActive(true);
+      
                 break;
+            case OperationType.CombineItem:
+                painelBloqueio2.SetActive(true);
+                MarkCombinableSlots(item);
+                helpText.text = "Selecione o slot para combinar a gema.";
+                helpText.gameObject.SetActive(true);
+                break;
+        
 
         }
+        closeOperationPanel.SetActive(true);
+        dialogPanel.SetActive(false);
         currentOperationItem = item;
         currentOperation = operation;
     }
@@ -178,10 +206,14 @@ public class Inventory : MonoBehaviour
         SlotScript objSlotScript = slot.GetComponent<SlotScript>();
         if (currentOperation == OperationType.Null)
         {
+
             if (objSlotScript.item != null)
             {
+                if (slot.tag == "Slot")
+                {
 
-                ShowDialogItem(slot);
+                    ShowDialogItem(slot);
+                }
 
             }
             else
@@ -193,21 +225,141 @@ public class Inventory : MonoBehaviour
         else
         {	
 			if(lastSelectSlot != slot){
-	            if (currentOperation == OperationType.MoveItem)
-	            {
-	                objSlotScript.item = currentOperationItem;
-	                ResetCurrentOperation();
-	                lastSelectSlot.GetComponent<SlotScript>().item = null;
-	                DesSelectSlot();
-	            }
+                switch (currentOperation)
+                {
+                    case OperationType.MoveItem:
+                        if (objSlotScript.item != null)
+                        {
+                            lastSelectSlot.GetComponent<SlotScript>().item = objSlotScript.item;
+                        }
+                        else
+                        {
+                            lastSelectSlot.GetComponent<SlotScript>().item = null;
+                        }
+                        objSlotScript.item = currentOperationItem;
+                        ResetCurrentOperation();
+                        break;
+                    case OperationType.EquipItem:
+                        foreach (Transform gameObj in gradeItensEquiped.transform)
+                        {
+                            if (gameObj.tag == "EquipedSlot")
+                            {
+                                SlotScript slotObj = gameObj.GetComponent<SlotScript>();
+                                if (currentOperationItem == slotObj.item)
+                                {
+                                    slotObj.item = null;
+
+                                }
+                            }
+                        }
+                        objSlotScript.item = currentOperationItem;
+                        ResetCurrentOperation();
+
+                        break;
+                    case OperationType.CombineItem:
+                        SlotScript atual_slotScript = slot.GetComponent<SlotScript>();
+                        SlotScript ultimo_slotSript = lastSelectSlot.GetComponent<SlotScript>();
+                        if (atual_slotScript.blockSloctImage.gameObject.activeSelf == false)
+                        {
+                            List<Item> listItensCombine = new List<Item>();
+                            listItensCombine.Add(atual_slotScript.item);
+                            listItensCombine.Add(ultimo_slotSript.item);
+
+                            ultimo_slotSript.item = CombineItens(listItensCombine);
+                            atual_slotScript.item = null;
+                            ResetCurrentOperation();
+                        }
+                        break;
+                }
+                    //DesSelectSlot();
+                    
+
 			}
         }
     }
 
     public void ResetCurrentOperation()
     {
+
         currentOperation = OperationType.Null;
         currentOperationItem = new Item();
+         closeOperationPanel.SetActive(false);
+        helpText.gameObject.SetActive(false);
+        painelBloqueio.SetActive(false);
+        painelBloqueio2.SetActive(false);
+        DesSelectSlot();
+
+        foreach (Transform gameObj in gradeItens.transform)
+        {
+            SlotScript slotScript = gameObj.GetComponent<SlotScript>();
+           
+            slotScript.blockSloctImage.gameObject.SetActive(false);
+           
+        }
     }
-    
+
+    public Item CombineItens(List<Item> itens)
+    {
+        Item itemRetur = new Item();
+        int level = itens[0].itemLevel + itens[1].itemLevel;
+        if (itens[0].itemType == itens[1].itemType)
+        {
+            itens[0].itemLevel = level;
+            itemRetur = itens[0];
+        }
+        else
+        {
+
+            var novalista = itens.OrderBy(c => c.itemType);
+            string newName = "";
+            foreach (Item item in novalista)
+            {
+                newName += item.itemType;
+            }
+
+            Debug.Log(newName);
+            
+            itemRetur = new Item(8, level, newName, true);
+        }
+
+        return itemRetur;
+    }
+
+    public void MarkCombinableSlots(Item item)
+    {
+        foreach (Transform gameObj in gradeItens.transform)
+        {
+            SlotScript slotScript = gameObj.GetComponent<SlotScript>();
+            if (slotScript.item != null)
+            {
+                if (gameObj.tag == "Slot")
+                {
+                    if (!item.isCombination)
+                    {
+                        if (slotScript.item.isCombination)
+                        {
+                            slotScript.blockSloctImage.gameObject.SetActive(true);
+                        }
+
+                    }
+                    else
+                    {
+                        if (slotScript.item.itemType != item.itemType)
+                        {
+                            slotScript.blockSloctImage.gameObject.SetActive(true);
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                slotScript.blockSloctImage.gameObject.SetActive(true);
+            }
+
+            
+        }
+    }
+
+
 }

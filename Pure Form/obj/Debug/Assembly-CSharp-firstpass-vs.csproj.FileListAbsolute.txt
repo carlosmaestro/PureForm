@@ -11,3 +11,17 @@ C:\Users\brlight\Documents\Projetos\PureForm\PureForm\Temp\bin\Debug\Unity.Cecil
 C:\Users\brlight\Documents\Projetos\PureForm\PureForm\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\brlight\Documents\Projetos\PureForm\PureForm\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\brlight\Documents\Projetos\PureForm\PureForm\obj\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\TouchScript.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\UnityEditor.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\UnityEngine.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\UnityEngine.UI.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Unity.SerializationLogic.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\Temp\bin\Debug\Unity.CecilTools.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\obj\Debug\Assembly-CSharp-firstpass-vs.csprojResolveAssemblyReference.cache
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\obj\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\brlight\Documents\Projetos\PureForm\Pure Form\obj\Debug\Assembly-CSharp-firstpass.pdb

@@ -26,12 +26,23 @@ public class DialogPanel : MonoBehaviour {
     public void Close()
     {
         transform.gameObject.SetActive(false);
-        inventory.DesSelectSlot();
+        //inventory.DesSelectSlot();
+        inventory.ResetCurrentOperation();
     }
 
     public void SetMoveOperation()
     {
         inventory.SetCurrentOperation(Inventory.OperationType.MoveItem, item);
+    }
+
+    public void SetEquipOperation()
+    {
+        inventory.SetCurrentOperation(Inventory.OperationType.EquipItem, item);
+    }
+
+    public void SetCombineOperation()
+    {
+        inventory.SetCurrentOperation(Inventory.OperationType.CombineItem, item);
     }
 
 
