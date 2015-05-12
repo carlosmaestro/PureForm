@@ -10,6 +10,7 @@ public class Item {
     public GameObject itemModel;
     public string itemType;
     public bool isCombination;
+    public int orderEquip = -1;
 
     //public enum ItemType
     //{ 
