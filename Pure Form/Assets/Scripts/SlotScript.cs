@@ -44,14 +44,62 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
 			itemImage.sprite = item.itemIcon;
 			itemImage.enabled = true;
 			levelSlotText.text = item.itemLevel + "";
-			if (item.orderEquip != -1) {
-				selectedSlotImage.color = inventory.listColorsItemEquiped [item.orderEquip];
-				selectedSlotImage.gameObject.SetActive (true);
-			} 
+            if (item.orderEquip != -1)
+            {
+                selectedSlotImage.color = inventory.listColorsItemEquiped[item.orderEquip];
+                selectedSlotImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (inventory.lastSelectedItem != item)
+                {
+                    selectedSlotImage.gameObject.SetActive(false);
+                }
+            }
+            if (inventory.currentOperation == Inventory.OperationType.CombineItem)
+            {
+                if (blockSloctImage != null)
+                    if (inventory.currentOperationItem.isCombination)
+                    {
+                        if (item.itemType == inventory.currentOperationItem.itemType)
+                        {
+                            blockSloctImage.gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            blockSloctImage.gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        if (item.isCombination)
+                        {
+                            blockSloctImage.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            blockSloctImage.gameObject.SetActive(false);
+                        }
+                    }
+               
+               
+            }
 
 		} else {
+            if (inventory.currentOperation == Inventory.OperationType.CombineItem)
+            {
+                if (blockSloctImage != null)
+                blockSloctImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (blockSloctImage != null)
+                blockSloctImage.gameObject.SetActive(false);
+            }
+
 			itemImage.sprite = null;
 			levelSlotText.text = "";
+            selectedSlotImage.gameObject.SetActive(false);
 		}
 
 		foreach (Touch touch in Input.touches) {

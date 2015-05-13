@@ -36,3 +36,6 @@ Thumbs.db
 
 
 .assetDatabase3
+*.info
+*.prefs
+*.dll

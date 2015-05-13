@@ -36,7 +36,7 @@ public class Inventory : MonoBehaviour
 	private GameObject lastSelectSlot;
 	//index do item do ultimo Slot selecionado
 	private int lastSelectSlotIndexItem;
-    private Item lastSelectedItem;
+	public Item lastSelectedItem;
     
 	//paineis de interação dieta com o player
 	public GameObject dialogPanel;
@@ -67,7 +67,7 @@ public class Inventory : MonoBehaviour
 	public List<GameObject> listSlotsGridEquiped;
 	public List<GameObject> listSlotsEquiped;
 
-    public Text pageNumberText;
+	public Text pageNumberText;
 
 	//
 
@@ -131,7 +131,10 @@ public class Inventory : MonoBehaviour
 	public void SetPageInventory (int indexPage)
 	{
 		indexPageInventory = indexPage;
-        pageNumberText.text = indexPageInventory + "";
+		pageNumberText.text = indexPageInventory + "";
+		//if(currentOperationItem != null && currentOperation == OperationType.CombineItem)
+		//MarkCombinableSlots (currentOperationItem);
+	
 
 		for (int i = 0; i < 12; i++) {
 			//if (i < indexPage * 12 && i+1 > indexPage * 12 - 12) {
@@ -185,7 +188,7 @@ public class Inventory : MonoBehaviour
 	{
 		lastSelectSlot = slot;
 		SlotScript slotScriptObj = slot.GetComponent<SlotScript> ();
-        lastSelectedItem = slotScriptObj.item;
+		lastSelectedItem = slotScriptObj.item;
 		lastSelectSlotIndexItem = database.itens.IndexOf (slotScriptObj.item);
 		
 		//slot.GetComponent<Image>().color = selectedSlotColor;
@@ -202,18 +205,18 @@ public class Inventory : MonoBehaviour
 
 	public void MarkMovebleSlots ()
 	{
-		foreach (GameObject slot in slots) {
-			Debug.Log (" slot ----" + slot.name);
-			if (slot.name != lastSelectSlot.name) {
-				SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
-				objSlotScript.selectedSlotImage.gameObject.SetActive (true);
-				objSlotScript.selectedSlotImage.color = selectableSlotColor;
-			} else {
-				SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
-				objSlotScript.selectedSlotImage.gameObject.SetActive (true);
-				objSlotScript.selectedSlotImage.color = notSelectableSlotColor;
-			}
-		}
+		//foreach (GameObject slot in slots) {
+		//    Debug.Log (" slot ----" + slot.name);
+		//    if (slot.name != lastSelectSlot.name) {
+		//        SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
+		//        objSlotScript.selectedSlotImage.gameObject.SetActive (true);
+		//        objSlotScript.selectedSlotImage.color = selectableSlotColor;
+		//    } else {
+		//        SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
+		//        objSlotScript.selectedSlotImage.gameObject.SetActive (true);
+		//        objSlotScript.selectedSlotImage.color = notSelectableSlotColor;
+		//    }
+		//}
 
 		//Debug.Log(" slot ----" + lastSelectSlot.name);
 	}
@@ -281,25 +284,25 @@ public class Inventory : MonoBehaviour
 					if (objSlotScript.item != null) {
 						int firsIndex = lastSelectSlotIndexItem;
 						int secondIndex = database.itens.IndexOf (objSlotScript.item);
-                        Item fItem = lastSelectedItem;
+						Item fItem = lastSelectedItem;
 						Item sItem = objSlotScript.item;
 						database.itens [firsIndex] = sItem;
 						database.itens [secondIndex] = fItem;
-                        //lastobjSlotScript.item = sItem;
-                        //objSlotScript.item = fItem;
-                        SetPageInventory(indexPageInventory);
+						//lastobjSlotScript.item = sItem;
+						//objSlotScript.item = fItem;
+						SetPageInventory (indexPageInventory);
 						
 
 					} else {
-                        int firsIndex = lastSelectSlotIndexItem;
+						int firsIndex = lastSelectSlotIndexItem;
 						int secondIndex = slots.IndexOf (slot) + indexPageInventory * 12 - 12;
-                        Item fItem = lastSelectedItem;
+						Item fItem = lastSelectedItem;
 						Item sItem = null;
 						database.itens [firsIndex] = sItem;
 						database.itens [secondIndex] = fItem;
-                        //lastobjSlotScript.item = null;
-                        //objSlotScript.item = fItem;
-                        SetPageInventory(indexPageInventory);
+						//lastobjSlotScript.item = null;
+						//objSlotScript.item = fItem;
+						SetPageInventory (indexPageInventory);
 					}
 
 					ResetCurrentOperation ();
@@ -317,8 +320,11 @@ public class Inventory : MonoBehaviour
 					GameObject oldSlot = new GameObject ();
 					if (objSlotScript.item != null) {
 						oldSlot = GetSlotGridByItem (objSlotScript.item);
-						oldSlot.GetComponent<SlotScript> ().selectedSlotImage.gameObject.SetActive (false);
-						oldSlot.GetComponent<SlotScript> ().item.orderEquip = -1;
+						if (oldSlot != null) {
+							oldSlot.GetComponent<SlotScript> ().selectedSlotImage.gameObject.SetActive (false);
+							oldSlot.GetComponent<SlotScript> ().item.orderEquip = -1;
+						}
+
 					}
 					objSlotScript.item = currentOperationItem;
 					objSlotScript.item.orderEquip = CheckItemEquiped (currentOperationItem);
@@ -333,10 +339,20 @@ public class Inventory : MonoBehaviour
 					if (atual_slotScript.blockSloctImage.gameObject.activeSelf == false) {
 						List<Item> listItensCombine = new List<Item> ();
 						listItensCombine.Add (atual_slotScript.item);
-						listItensCombine.Add (ultimo_slotSript.item);
+						listItensCombine.Add (lastSelectedItem);
 
-						ultimo_slotSript.item = CombineItens (listItensCombine);
-						atual_slotScript.item = null;
+						int secondIndex = database.itens.IndexOf (atual_slotScript.item);
+
+                        ultimo_slotSript.item = null;
+                        atual_slotScript.item = CombineItens(listItensCombine);
+
+						int firsIndex = lastSelectSlotIndexItem;
+						//Item fItem = lastSelectedItem;
+						//Item sItem = objSlotScript.item;
+                        database.itens[secondIndex] = atual_slotScript.item;
+                        database.itens[firsIndex] = null;
+
+
 						UpdateEquipedSlots ();
 						ResetCurrentOperation ();
 					}
@@ -362,8 +378,10 @@ public class Inventory : MonoBehaviour
 
 		foreach (Transform gameObj in gradeItens.transform) {
 			SlotScript slotScript = gameObj.GetComponent<SlotScript> ();
-           
-			slotScript.blockSloctImage.gameObject.SetActive (false);
+
+			if (gameObj.tag == "Slot")
+			if (slotScript.item != null)
+				slotScript.blockSloctImage.gameObject.SetActive (false);
            
 		}
 	}
@@ -374,7 +392,7 @@ public class Inventory : MonoBehaviour
 		int level = itens [0].itemLevel + itens [1].itemLevel;
 		if (itens [0].itemType == itens [1].itemType) {
 			
-			itemRetur = new Item (8, level, itens [0].itemType, false);
+			itemRetur = new Item (8, level, itens [0].itemType, true);
 		
 		} else {
 
@@ -394,28 +412,46 @@ public class Inventory : MonoBehaviour
 
 	public void MarkCombinableSlots (Item item)
 	{
-		foreach (Transform gameObj in gradeItens.transform) {
-			SlotScript slotScript = gameObj.GetComponent<SlotScript> ();
-			if (slotScript.item != null) {
-				if (gameObj.tag == "Slot") {
-					if (!item.isCombination) {
-						if (slotScript.item.isCombination) {
-							slotScript.blockSloctImage.gameObject.SetActive (true);
-						}
+		//foreach (Transform gameObj in gradeItens.transform) {
+		//    SlotScript slotScript = gameObj.GetComponent<SlotScript> ();
+		//    if (gameObj.tag == "Slot")
+		//    {
+		//        if (slotScript.item != null)
+		//        {
 
-					} else {
-						if (slotScript.item.itemType != item.itemType) {
-							slotScript.blockSloctImage.gameObject.SetActive (true);
-						}
+		//            if (!item.isCombination)
+		//            {
+		//                if (slotScript.item.isCombination)
+		//                {
+		//                    slotScript.blockSloctImage.gameObject.SetActive(true);
+		//                }
+		//                else
+		//                {
+		//                    slotScript.blockSloctImage.gameObject.SetActive(false);
+		//                }
 
-					}
-				}
-			} else {
-				slotScript.blockSloctImage.gameObject.SetActive (true);
-			}
+		//            }
+		//            else
+		//            {
+		//                if (slotScript.item.itemType != item.itemType)
+		//                {
+		//                    slotScript.blockSloctImage.gameObject.SetActive(true);
+		//                }else
+		//                {
+		//                    slotScript.blockSloctImage.gameObject.SetActive(false);
+		//                }
+
+		//            }
+
+		//        }
+		//        else
+		//        {
+		//            slotScript.blockSloctImage.gameObject.SetActive(true);
+		//        }
+		//    }
 
             
-		}
+		//}
 	}
 
 	public void UpdateEquipedSlots ()
@@ -451,5 +487,11 @@ public class Inventory : MonoBehaviour
 		//UpdateEquipedSlots ();
 		SetPageInventory (indexPageInventory);
 	}
+
+	public void UpdateGridItensToEquipedSlots ()
+	{
+
+	}
+
 
 }
