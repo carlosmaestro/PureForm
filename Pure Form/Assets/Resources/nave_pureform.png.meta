@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 43c8e6c074087c5469c1853b5aeb32b9
-timeCreated: 1431953287
+timeCreated: 1432074527
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -9,6 +9,7 @@ TextureImporter:
     21300004: nave_pureform_2
     21300006: nave_pureform_3
     21300008: nave_pureform_4
+    21300010: nave_pureform_5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,52 +58,52 @@ TextureImporter:
     - name: nave_pureform_0
       rect:
         serializedVersion: 2
-        x: 79
-        y: 2119
-        width: 442
-        height: 401
+        x: 0
+        y: 2118
+        width: 600
+        height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: nave_pureform_1
       rect:
         serializedVersion: 2
-        x: 39
-        y: 1599
-        width: 522
+        x: 0
+        y: 1595
+        width: 600
         height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: nave_pureform_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 1079
+        y: 1080
         width: 600
         height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: nave_pureform_3
       rect:
         serializedVersion: 2
-        x: 39
-        y: 559
-        width: 522
-        height: 403
+        x: 0
+        y: 560
+        width: 600
+        height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: nave_pureform_4
+    - name: nave_pureform_5
       rect:
         serializedVersion: 2
-        x: 79
-        y: 0
-        width: 442
-        height: 441
+        x: 0
+        y: 43
+        width: 600
+        height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
