@@ -27,9 +27,30 @@ public class Player : MonoBehaviour
 	public GameObject spawnCenterShot;
 	public GameObject shot;
 	private bool shoot;
+    private GameController gameController;
+    public GameObject cam;
+
+    //sound
+    public AudioClip hitSound;
+    public AudioClip explosionSound;
+    private AudioSource source;
+    private float volLowRange = .5f;
+    private float volHighRange = 1.0f;
+
+    public GameObject[] listWeapons;
+
+
+    public float lifePlayer = 100;
+
+    private Animator animator;
 	// Use this for initialization
 	void Start ()
 	{
+        Time.timeScale = 1;
+       // cam = GameObject.FindGameObjectWithTag("MainCamera");
+        source = camera.GetComponent<AudioSource>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        animator = transform.GetComponent<Animator>();
 		countShot = limitShot;
 		counterTimeFire = 1.0f / fireRate;
 		directions = new List<Touch> ();
@@ -38,9 +59,33 @@ public class Player : MonoBehaviour
 		limit_right = Camera.main.ScreenToWorldPoint (new Vector3 (Screen.width, 0, 0)).x;
 		limit_left = Camera.main.ScreenToWorldPoint (new Vector3 (0, 0, 0)).x;
 		//Debug.Log(limit_left);
-		Debug.Log (-camera.WorldToScreenPoint (transform.position).x);
+        ////Debug.Log (-camera.WorldToScreenPoint (transform.position).x);
 
 	}
+
+    public void ChangeWeapons(string type)
+    {
+        if(type == "Fire" ||type == "Fire_Air" ||type == "Fire_Water" ||type == "Fire_Earth")
+        {
+            shot = listWeapons[0];
+        }
+        else if(type == "Water" ||type == "Air_Water" ||type == "Water_Earth")
+        {
+            shot = listWeapons[1];
+        }
+        else if(type == "Air" ||type == "Air_Earth")
+        {
+            shot = listWeapons[2];
+        }
+        else if(type == "Earth" )
+        {
+            shot = listWeapons[3];
+        }
+        else
+        {
+            shot = listWeapons[4];
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -50,7 +95,7 @@ public class Player : MonoBehaviour
 			waitInterval = false;
 		}
 		if (!waitInterval && Time.time - frequenciaLimite > counterTimeFire) {
-			Debug.Log (counterTimeFire);
+            //Debug.Log (counterTimeFire);
 			frequenciaLimite = Time.time;
 			Shoot ();
 			if (countShot <= 0) {
@@ -96,22 +141,40 @@ public class Player : MonoBehaviour
 		}
 		if (move) {
 			if (sentido == 1) {
+                animator.SetBool("moveright", true);
+                animator.SetBool("moveleft", false);
 				if (transform.position.x < limit_right) {
+                    
 					transform.position = new Vector3 (transform.position.x + velocity * Time.deltaTime, transform.position.y, 0);
 				} else {
+                    
 					transform.position = new Vector3 (limit_right, transform.position.y, 0);
 					//transform.position = camera.ScreenToWorldPoint(new Vector3(playerWidth / 2, transform.position.y, 0));
 				} 
 				//transform.position = new Vector3 (transform.position.x + velocity * Time.deltaTime, transform.position.y, 0);
-			} else if (sentido == -1) {
-				if (transform.position.x > limit_left) {
-					transform.position = new Vector3 (transform.position.x - velocity * Time.deltaTime, transform.position.y, 0);
-				} else {
-					transform.position = new Vector3 (limit_left, transform.position.y, 0);
-					//transform.position = camera.ScreenToWorldPoint(new Vector3(playerWidth / 2, transform.position.y, 0));
-				} 
-			}
-		}
+            }
+            else if (sentido == -1)
+            {
+                animator.SetBool("moveright", false);
+                animator.SetBool("moveleft", true);
+                if (transform.position.x > limit_left)
+                {
+                    transform.position = new Vector3(transform.position.x - velocity * Time.deltaTime, transform.position.y, 0);
+                    
+                }
+                else
+                {
+                    transform.position = new Vector3(limit_left, transform.position.y, 0);
+                    //transform.position = camera.ScreenToWorldPoint(new Vector3(playerWidth / 2, transform.position.y, 0));
+                }
+            }
+
+        }
+        else
+        {
+            animator.SetBool("moveright", false);
+            animator.SetBool("moveleft", false);
+        }
 	
 
 		
@@ -121,4 +184,50 @@ public class Player : MonoBehaviour
 	{
 		Instantiate (shot, spawnCenterShot.transform.position, Quaternion.identity);
 	}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "ShotEnemy")
+        {
+            lifePlayer -= other.GetComponent<ShotEnemy>().damage;
+            gameController.ResetPointsMultiplier();
+            gameController.SetLifePlayer(lifePlayer);
+
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(hitSound, vol);
+            //Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+        if (other.gameObject.tag == "ShotSergeant")
+        {
+            lifePlayer -= other.GetComponent<ShotSergeant>().damage;
+            gameController.ResetPointsMultiplier();
+            gameController.SetLifePlayer(lifePlayer);
+
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(hitSound, vol);
+            //Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "ShotBoss")
+        {
+            lifePlayer -= other.GetComponent<ShotSergeant>().damage;
+            gameController.ResetPointsMultiplier();
+            gameController.SetLifePlayer(lifePlayer);
+
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(hitSound, vol);
+            //Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+
+        if (lifePlayer <= 0)
+        {
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(explosionSound, vol);
+            Destroy(gameObject);
+            
+        }
+    }
 }

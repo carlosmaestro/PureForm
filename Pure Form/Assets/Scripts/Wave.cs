@@ -9,6 +9,8 @@ public class Wave : MonoBehaviour
 	public int numberColumns;
 	public int numberRows;
     public string namePath;
+
+    public int numberTotalEnemys = -1;
 	public Vector3 anchorPosition;
 
 	public GameObject enemy;
@@ -17,20 +19,22 @@ public class Wave : MonoBehaviour
 
 	float frequencia = 0.25f;
 	bool endWave = false;
-	private List<GameObject> wave = new List<GameObject> ();
-	private List<Vector3> listPositions = new List<Vector3> ();
-    private List<GameObject> listEnemys = new List<GameObject>();
+    public List<GameObject> wave = new List<GameObject>();
+    public List<Vector3> listPositions = new List<Vector3>();
+    public List<GameObject> listEnemys = new List<GameObject>();
 
     public float frequenciaAttack = 0;
     public float delayFirstAttack = 11;
     public float delayNormaltAttack = 3;
     public float intervalAttack = 0;
 
-
+    public GameController gameController;
     
 
 	void Start ()
 	{
+        numberTotalEnemys = numberRows * numberColumns;
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         intervalAttack = delayFirstAttack;
         anchorPosition = transform.position;
         Vector3 position;
@@ -46,11 +50,19 @@ public class Wave : MonoBehaviour
                 listPositions.Add(new Vector3(position.x, position.y, 0));
 			}
 		}
-		Debug.Log ("list size" + listPositions.Count);
+        //Debug.Log ("list size" + listPositions.Count);
 	}
 	
 	void Update ()
 	{
+        //Debug.Log(transform.childCount);
+        
+        if(numberTotalEnemys == 0)
+            {
+                gameController.StartNextEvent();
+
+                Destroy(gameObject);
+            }
         if (Time.time - frequenciaAttack > intervalAttack)
         {
             frequenciaAttack = Time.time;
@@ -60,9 +72,13 @@ public class Wave : MonoBehaviour
             {
                 listEnemys.Add(gameObj.gameObject);
             }
-
-            ChoseEnemyAttack();     
-            Debug.Log("attack");
+            if (listEnemys.Count > 0)
+            {
+                ChoseEnemyAttack();
+                //Debug.Log("attack");
+            }
+            
+           
         }
 
 		if (!endWave && Time.time - frequencia > 0.5f) {
@@ -75,12 +91,13 @@ public class Wave : MonoBehaviour
                 GameObject gameObj = Instantiate(enemy) as GameObject;
                 gameObj.transform.parent = transform;
                 //listEnemys.Add(gameObj);
-                Debug.Log(listEnemys.Count);
+                //Debug.Log(listEnemys.Count);
 				countEnemy++;
 			} else {
 				endWave = true;
 			}
 		}
+        
 	}
 
     public void ChoseEnemyAttack()

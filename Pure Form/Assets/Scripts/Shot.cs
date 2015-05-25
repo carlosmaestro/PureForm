@@ -6,6 +6,7 @@ public class Shot : MonoBehaviour {
     public float velocidade;
     public int directionShot = 1;
     private Vector3 postionScreenPoints;
+    public float damage;
 	// Use this for initialization
     
 	void Start () {
@@ -23,7 +24,7 @@ public class Shot : MonoBehaviour {
         Vector3 tmpPos = Camera.main.WorldToScreenPoint(transform.position);
         if (tmpPos.y > Screen.height || tmpPos.y < 0)
         {
-            Debug.Log("Destroy");
+            //Debug.Log("Destroy");
             Destroy(gameObject);
         }
 	}

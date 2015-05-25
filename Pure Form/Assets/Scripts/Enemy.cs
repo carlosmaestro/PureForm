@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 	private GameController gameController;
 	public Vector3[] pathFinal;
 	public float timeAttack = 0;
+    public bool activateAttack = false;
     
 	void Start ()
 	{
@@ -47,8 +48,17 @@ public class Enemy : MonoBehaviour
 
 	void Update ()
 	{
-		Vector3 tmpPos = Camera.main.WorldToScreenPoint (transform.position);
-		if (tmpPos.y < Screen.height && Time.time - frequenciaAttack > intervalAttack) {
+        Vector3 tmpPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (!activateAttack == tmpPos.y < Screen.height)
+        {
+            frequenciaAttack = Time.time;
+            SetIntervalShot();
+            activateAttack = true;
+        }
+
+        if (activateAttack && Time.time - frequenciaAttack > intervalAttack)
+        {
 			frequenciaAttack = Time.time;
 			Instantiate (shot, spawnShot.transform.position, Quaternion.identity);
 			SetIntervalShot ();
@@ -66,6 +76,7 @@ public class Enemy : MonoBehaviour
 			source.PlayOneShot (hitSound, vol);
 			Destroy (gameObject);
 			Destroy (other.gameObject);
+            transform.parent.gameObject.GetComponent<Wave>().numberTotalEnemys -= 1; 
 		}
 	}
 

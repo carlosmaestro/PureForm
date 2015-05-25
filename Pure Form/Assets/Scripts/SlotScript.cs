@@ -102,38 +102,38 @@ public class SlotScript : MonoBehaviour, IPointerEnterHandler ,IPointerClickHand
             selectedSlotImage.gameObject.SetActive(false);
 		}
 
-		foreach (Touch touch in Input.touches) {
-			//Create horizontal plane
-			Plane horPlane = new Plane (Vector3.up, Vector3.zero);
+        //foreach (Touch touch in Input.touches) {
+        //    //Create horizontal plane
+        //    Plane horPlane = new Plane (Vector3.up, Vector3.zero);
 
-			//Gets the ray at position where the screen is touched
-			Ray ray = Camera.main.ScreenPointToRay (touch.position);
+        //    //Gets the ray at position where the screen is touched
+        //    Ray ray = Camera.main.ScreenPointToRay (touch.position);
 
-			if (touch.phase == TouchPhase.Began) {
-				RaycastHit hit = new RaycastHit ();
-				if (Physics.Raycast (ray, out hit, maxPickingDistance)) {
-					//pickedObject = hit.transform;
-					startPos = touch.position;
-					inventory.draggingItem = true;
-					inventory.positionMouse = startPos;
-				} else {
-					//pickedObject = null;
-				}
-			} else if (touch.phase == TouchPhase.Moved) {
-				//if (pickedObject != null)
-				//{
-				//    float distance1 = 0f;
-				//    if (horPlane.Raycast(ray, out distance1))
-				//    {
-				//        //pickedObject.transform.position = ray.GetPoint(distance1);
-				//        inventory.positionMouse = ray.GetPoint(distance1);
-				//    }
-				//}
-			} else if (touch.phase == TouchPhase.Ended) {
-				//pickedObject = null;
-				inventory.draggingItem = false;
-			}
-		}
+        //    if (touch.phase == TouchPhase.Began) {
+        //        RaycastHit hit = new RaycastHit ();
+        //        if (Physics.Raycast (ray, out hit, maxPickingDistance)) {
+        //            //pickedObject = hit.transform;
+        //            startPos = touch.position;
+        //            //inventory.draggingItem = true;
+        //            //inventory.positionMouse = startPos;
+        //        } else {
+        //            //pickedObject = null;
+        //        }
+        //    } else if (touch.phase == TouchPhase.Moved) {
+        //        //if (pickedObject != null)
+        //        //{
+        //        //    float distance1 = 0f;
+        //        //    if (horPlane.Raycast(ray, out distance1))
+        //        //    {
+        //        //        //pickedObject.transform.position = ray.GetPoint(distance1);
+        //        //        inventory.positionMouse = ray.GetPoint(distance1);
+        //        //    }
+        //        //}
+        //    } else if (touch.phase == TouchPhase.Ended) {
+        //        //pickedObject = null;
+        //        //inventory.draggingItem = false;
+        //    }
+        //}
 
 
 	}

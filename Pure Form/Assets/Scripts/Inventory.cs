@@ -10,8 +10,6 @@ public class Inventory : MonoBehaviour
 	private List<GameObject> slots = new List<GameObject> ();
 	public GameObject slotModel;
 	public List<Item> itens = new List<Item> ();
-	public bool draggingItem = false;
-	public Vector3 positionMouse;
 
 	//grade itens
 	public GameObject gradeItens;
@@ -391,8 +389,14 @@ public class Inventory : MonoBehaviour
 		Item itemRetur = new Item ();
 		int level = itens [0].itemLevel + itens [1].itemLevel;
 		if (itens [0].itemType == itens [1].itemType) {
-			
-			itemRetur = new Item (8, level, itens [0].itemType, true);
+            if (itens[0].isCombination)
+            {
+                itemRetur = new Item(8, level, itens[0].itemType, true, -1);
+            }
+            else
+            {
+                itemRetur = new Item(8, level, itens[0].itemType, false, -1);
+            }
 		
 		} else {
 
@@ -404,7 +408,7 @@ public class Inventory : MonoBehaviour
 
 			Debug.Log (newName);
             
-			itemRetur = new Item (8, level, newName, true);
+			itemRetur = new Item (8, level, newName, true, -1);
 		}
 
 		return itemRetur;
@@ -488,10 +492,32 @@ public class Inventory : MonoBehaviour
 		SetPageInventory (indexPageInventory);
 	}
 
-	public void UpdateGridItensToEquipedSlots ()
-	{
+    //public void UpdateGridItensToEquipedSlots ()
+    //{
 
-	}
+    //}
 
+    public void PlayNextPhase()
+    {
+        int count = 1;
+        string baseNameKey = "idGemaEquipada";
+        //string baseNameKeyNivel = "nivelGemaEquipada";
+        foreach (GameObject gameObj in listSlotsGridEquiped) {
+			Debug.Log (listSlotsGridEquiped.Count);
+			SlotScript slotScripObj = gameObj.GetComponent<SlotScript> ();
+			if (slotScripObj.item != null) {
+                PlayerPrefs.SetInt(baseNameKey +count, slotScripObj.item.itemID);
+                //PlayerPrefs.SetInt(baseNameKey +count, slotScripObj.item.itemLevel);
+				count++;
+                if(count == 4){
+                    break;
+                }
+			}
+		}
+        PlayerPrefs.Save();
+        //int gemaEquipada1 = listSlotsEquiped.is
+        //PlayerPrefs.SetInt("idGemaEquipada1", listSlotsEquiped)
+        Application.LoadLevel("GameStage");
+    }
 
 }

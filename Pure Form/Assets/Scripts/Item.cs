@@ -26,13 +26,14 @@ public class Item {
     //    Water_Earth
     //}
 
-    public Item(int id, int level, string type, bool iscombination)
+    public Item(int id, int level, string type, bool iscombination, int order)
     {
         itemID = id;
         itemLevel = level;
         itemIcon = Resources.Load<Sprite>(type);
         itemType = type;
         isCombination = iscombination;
+        orderEquip = order;
     }
 
     public Item()
