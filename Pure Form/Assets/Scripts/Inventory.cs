@@ -72,8 +72,11 @@ public class Inventory : MonoBehaviour
 	//list colors item equiped
 	public List<Color32> listColorsItemEquiped;
 
-	void Start ()
-	{
+    public BlockController blockController;
+
+    void Start()
+    {
+        blockController = GameObject.FindGameObjectWithTag("BlockController").GetComponent<BlockController>();
 		listSlotsGridEquiped = GetSlotsGridEquiped ();
 
 		currentOperation = OperationType.Null;
@@ -203,20 +206,6 @@ public class Inventory : MonoBehaviour
 
 	public void MarkMovebleSlots ()
 	{
-		//foreach (GameObject slot in slots) {
-		//    Debug.Log (" slot ----" + slot.name);
-		//    if (slot.name != lastSelectSlot.name) {
-		//        SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
-		//        objSlotScript.selectedSlotImage.gameObject.SetActive (true);
-		//        objSlotScript.selectedSlotImage.color = selectableSlotColor;
-		//    } else {
-		//        SlotScript objSlotScript = slot.GetComponent<SlotScript> ();
-		//        objSlotScript.selectedSlotImage.gameObject.SetActive (true);
-		//        objSlotScript.selectedSlotImage.color = notSelectableSlotColor;
-		//    }
-		//}
-
-		//Debug.Log(" slot ----" + lastSelectSlot.name);
 	}
 
 	public void SetCurrentOperation (OperationType operation, Item item)
@@ -461,7 +450,7 @@ public class Inventory : MonoBehaviour
 	public void UpdateEquipedSlots ()
 	{
 		foreach (GameObject gameObj in listSlotsGridEquiped) {
-			Debug.Log (listSlotsGridEquiped.Count);
+            //Debug.Log (listSlotsGridEquiped.Count);
 			SlotScript slotScripObj = gameObj.GetComponent<SlotScript> ();
 			if (slotScripObj.item != null) {
 				GameObject gObj = GetSlotGridByItem (slotScripObj.item);
@@ -503,7 +492,7 @@ public class Inventory : MonoBehaviour
         string baseNameKey = "idGemaEquipada";
         //string baseNameKeyNivel = "nivelGemaEquipada";
         foreach (GameObject gameObj in listSlotsGridEquiped) {
-			Debug.Log (listSlotsGridEquiped.Count);
+            //Debug.Log (listSlotsGridEquiped.Count);
 			SlotScript slotScripObj = gameObj.GetComponent<SlotScript> ();
 			if (slotScripObj.item != null) {
                 PlayerPrefs.SetInt(baseNameKey +count, slotScripObj.item.itemID);
@@ -517,6 +506,12 @@ public class Inventory : MonoBehaviour
         PlayerPrefs.Save();
         //int gemaEquipada1 = listSlotsEquiped.is
         //PlayerPrefs.SetInt("idGemaEquipada1", listSlotsEquiped)
+        blockController.ShowBlock();
+        Invoke("CallGameStage", 1);
+    }
+
+    public void CallGameStage()
+    {
         Application.LoadLevel("GameStage");
     }
 

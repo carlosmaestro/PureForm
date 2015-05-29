@@ -19,8 +19,11 @@ public class MenuBehaviour : MonoBehaviour
 	public string[] listPositionMenu;
 	public Color32[] backgroundMenuColor;
 	// Use this for initialization
-	void Start ()
-	{
+    public BlockController blockController;
+
+    void Start()
+    {
+        blockController = GameObject.FindGameObjectWithTag("BlockController").GetComponent<BlockController>();
 		sWidth = Screen.width;
 		sHeight = Screen.height;
 
@@ -134,6 +137,13 @@ public class MenuBehaviour : MonoBehaviour
 	}
 
     public void StartGame(string difficult)
+    {
+        blockController.ShowBlock();
+        Invoke("CallGameStage", 1);
+       
+    }
+
+    public void CallGameStage()
     {
         Application.LoadLevel("GameStage");
     }

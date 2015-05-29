@@ -30,6 +30,8 @@ public class Sergeant : MonoBehaviour
     public Vector3[] pathFinal;
     public float timeAttack = 0;
     Vector3[] path;
+
+    public GameObject player;
     void Start()
     {
         
@@ -59,14 +61,20 @@ public class Sergeant : MonoBehaviour
 
     void Update()
     {
-        Vector3 tmpPos = Camera.main.WorldToScreenPoint(transform.position);
-        if (tmpPos.y < Screen.height && Time.time - frequenciaAttack > intervalAttack)
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            frequenciaAttack = Time.time;
-            Instantiate(shot, spawnShot.transform.position, Quaternion.identity);
-            SetIntervalShot();
 
+            Vector3 tmpPos = Camera.main.WorldToScreenPoint(transform.position);
+            if (tmpPos.y < Screen.height && Time.time - frequenciaAttack > intervalAttack)
+            {
+                frequenciaAttack = Time.time;
+                Instantiate(shot, spawnShot.transform.position, Quaternion.identity);
+                SetIntervalShot();
+
+            }
         }
+
 
     }
 

@@ -40,7 +40,12 @@ public class GameController : MonoBehaviour {
 
     public Player player;
     public Connection connection;
-    void Start () {
+
+    public BlockController blockController;
+
+    void Start()
+    {
+        blockController = GameObject.FindGameObjectWithTag("BlockController").GetComponent<BlockController>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         connection = GameObject.FindGameObjectWithTag("Connection").GetComponent<Connection>();
         Instantiate(eventsOnPhase[countEvent]);
@@ -107,19 +112,26 @@ public class GameController : MonoBehaviour {
         countEvent++;
         if (countEvent >= eventsOnPhase.Length)
         {
-            Application.LoadLevel("Inventario");
+            blockController.ShowBlock();
+            Invoke("CallInventory", 1);
+
+            
         }
         else
         {
             Instantiate(eventsOnPhase[countEvent]);
-
         }
+    }
+
+    public void CallInventory()
+    {
+        Application.LoadLevel("Inventario");
     }
 	
 	void Update () {
         if (lifePlayer <= 0)
         {
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
             gameOverPanel.SetActive(true);
         }
         //rectHealthbar.right = new Vector3(lifePlayer, rectHealthbar.sizeDelta.y,0);
