@@ -110,7 +110,7 @@ public class GameController : MonoBehaviour {
     public void StartNextEvent()
     {
         countEvent++;
-        if (countEvent >= eventsOnPhase.Length)
+        if (countEvent <= eventsOnPhase.Length)
         {
             blockController.ShowBlock();
             Invoke("CallInventory", 1);

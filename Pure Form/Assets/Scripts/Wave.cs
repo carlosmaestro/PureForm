@@ -59,7 +59,7 @@ public class Wave : MonoBehaviour
         
         if(numberTotalEnemys == 0)
             {
-                gameController.StartNextEvent();
+                //gameController.StartNextEvent();
 
                 Destroy(gameObject);
             }

@@ -164,7 +164,7 @@ public class Sergeant : MonoBehaviour
         if (life <= 0)
         {
             Destroy(gameObject);
-            gameController.StartNextEvent();
+            //gameController.StartNextEvent();
         }
 
     }
